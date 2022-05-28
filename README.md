@@ -1,3 +1,7 @@
 # rock-paper-scissors
 
-Third hands-on project in The Odin Foundations course involving the game Rock-Paper-Scissors.
+Project 3 & 4 of The Odin Foundations Course.
+Built a simple UI for rock-paper-scissors game.
+Explored further with JS tools.
+
+[Webpage](https://4ndrelim.github.io/rock-paper-scissors/)
