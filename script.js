@@ -1,3 +1,37 @@
+/*
+handles DOM
+*/
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+const restart = document.querySelector('#restart-btn');
+const playerCurrScore = document.querySelector('#player-score');
+const computerCurrScore = document.querySelector('#computer-score');
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const playerSign = document.querySelector('#player-sign');
+const computerSign = document.querySelector('#computer-sign');
+var modalMsg = document.querySelector('.modal .modal-msg');
+var announce = document.querySelector('.announcement');
+
+/*
+event listeners on buttons
+*/
+rock.addEventListener("click", () => click("rock"));
+paper.addEventListener("click", () => click("paper"));
+scissors.addEventListener("click", () => click("scissors"));
+restart.addEventListener("click", restartGame);
+
+
+/*
+Initial game state
+*/
+let playerScore = 0;
+let computerScore = 0;
+
+/*
+Generate a random move by the computer
+*/
 function computerPlay() {
     let num  = Math.random();
     if (num < 1/3) {
@@ -10,91 +44,158 @@ function computerPlay() {
 } 
 
 /*
-Determines the outcome after 1 round
-1 -- draw
-2 -- player won
-3 -- computer won
-null -- invalid input
+Determines the outcome after 1 round & displays it
+0 -- draw
+1 -- player won
+2 -- computer won
 */
 function playRound(playerSelection, computerSelection) {
-    var playerSelection = playerSelection.toLowerCase();
-    
     if (!playerSelection) {
-        console.log("Input must be given");
+        announce.textContent = "Input must be given";
         return null;
     } 
 
-    if (playerSelection === computerSelection) {
-        console.log("It's a tie!");
-        return 1;
-    }
+    var playerSelection = playerSelection.toLowerCase();
 
+    if (playerSelection === computerSelection) {
+        announce.textContent = "It's a tie!";
+        return 0;
+    }
+    // Just minor formatting - capitalising the first letter of choice made
     let playerChoice = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
     let computerChoice = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1);
 
     if (playerSelection === "scissors") {
         if (computerSelection === "rock") {
-            console.log("You Lose! " + computerChoice + " beats " + playerChoice);
-            return 3;
-        } else {
-            console.log("You Win! " + playerChoice + " beats " + computerChoice);
+            announce.textContent = "You Lose! " + computerChoice + " beats " + playerChoice;
             return 2;
+        } else {
+            announce.textContent = "You Win! " + playerChoice + " beats " + computerChoice;
+            return 1;
         } 
     } else if (playerSelection === "paper") {
         if (computerSelection === "rock") {
-            console.log("You Win! " + playerChoice + " beats " + computerChoice);
-            return 2;
+            announce.textContent = "You Win! " + playerChoice + " beats " + computerChoice;
+            return 1;
         } else {
-            console.log("You Lose! " + computerChoice + " beats " + playerChoice);
-            return 3;
-        } 
-    } else if (playerSelection === "rock") {
-        if (computerSelection === "paper") {
-            console.log("You Lose! " + computerChoice + " beats " + playerChoice);
-            return 3;
-        } else {
-            console.log("You Win! " + playerChoice + " beats " + computerChoice);
+            announce.textContent = "You Lose! " + computerChoice + " beats " + playerChoice;
             return 2;
         } 
     } else {
-        console.log("Input given must be valid -- Select one of rock, paper, or scissors");
-        return null;
+        if (computerSelection === "paper") {
+            announce.textContent = "You Lose! " + computerChoice + " beats " + playerChoice;
+            return 2;
+        } else {
+            announce.textContent = "You Win! " + playerChoice + " beats " + computerChoice;
+            return 1;
+        } 
+    }
+}
+
+
+function click(playerSelection) {
+    if (isGameOver()) {
+        openModal();
+    }
+    const computerSelection = computerPlay();
+    const result = playRound(playerSelection, computerSelection);
+    updateScore(result);
+    updateChoices(playerSelection, computerSelection);
+
+    if (isGameOver()) {
+        openModal();
+        setModalMsg();
     }
 }
 
 /*
-Returns in string, the outcome of the game - win, draw or lsoe
-Function ensures 5 valid rounds are played, repeating prompt if invalid/no input given
+Updates playerScore and computerScore and correctly displays latest results 
+0 -- draw
+1 -- player won
+2 -- computer won
+Function is called in the function click
 */
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    for  (let i = 0; i < 5; i++) {
-        let outcome = null;
-        while (!outcome) {
-            let playerSelect = prompt("Your Choice?");
-            outcome = playRound(playerSelect, computerPlay());
-        }
-        if (outcome == 2) {
-            playerScore++;
-        } else if (outcome == 3) {
-            computerScore++;
-        }
-        /*
-        why bother playing?
-        if (computerScore >= 3 || playerScore >= 3) {
-            break;
-        }
-        */
+function updateScore(result) {
+    if (result === 1) {
+        playerScore++;
+    } else if (result === 2) {
+        computerScore++;
     }
-    if (computerScore > playerScore) {
-        return "You Lost!";
-    } else if (playerScore > computerScore) {
-        return "You Won!";
-    } else {
-        return "It's a draw!";
+    playerCurrScore.textContent = `You: ${playerScore}`;
+    computerCurrScore.textContent = `Computer: ${computerScore}`;
+}
+
+/*
+Update to display choice of player and computer 
+*/
+function updateChoices(playerSelection, computerSelection) {
+    switch (playerSelection) {
+        case "rock":
+            playerSign.textContent = '🪨';
+            break;
+        case "paper":
+            playerSign.textContent = '📄';
+            break;
+        case "scissors":
+            playerSign.textContent = '✂️'
+    }
+
+    switch (computerSelection) {
+        case "rock":
+            computerSign.textContent = '🪨';
+            break;
+        case "paper":
+            computerSign.textContent = '📄';
+            break;
+        case "scissors":
+            computerSign.textContent = '✂️'
     }
 }
 
-console.log(game());
+/*
+Function checks if there exist a winner
+*/
+function isGameOver() {
+    return playerScore === 5 || computerScore === 5;
+}
+
+/*
+Show pop-up message after game ends
+*/
+function openModal() {
+    modal.classList.add('active');
+    overlay.classList.add('active');
+}
+
+/*
+Close pop-up message when game restarts
+*/
+function closeModal() {
+    modal.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+/*
+Sets message in modal
+*/
+function setModalMsg() {
+    return playerScore > computerScore 
+    ? modalMsg.textContent = "You Won!" 
+    :  modalMsg.textContent = "You Lost!"
+}
+
+/*
+Restarts game
+*/
+function restartGame() {
+    playerScore = 0;
+    computerScore = 0;
+    announce.textContent = "~ First to 5 wins ~";
+    playerCurrScore.textContent = "You: 0";
+    computerCurrScore.textContent = "Computer: 0";
+    playerSign.textContent = '❓';
+    computerSign.textContent = '❓';
+    closeModal();
+}
+
 
