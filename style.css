@@ -2,6 +2,20 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0px;
+    font-family: "Mario-Kart-DS", "sans-serif";
+    word-spacing: 16px;
+}
+
+/*
+background for webpage
+*/
+#bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(1.25);
 }
 
 /*
@@ -9,15 +23,16 @@ header
 */
 .header {
     flex: 1;
-    padding: 16px 460px 48px;
+    padding: 24px 400px 48px;
     display: flex;
     justify-content: space-between;
-    background-color: rgb(21, 26, 21);
+    background-color: rgb(26, 35, 26);
+    opacity: 0.8;
 }
 
 .header div {
-    font-size: 48px;
-    color: rgb(230, 230, 108);
+    font-size: 56px;
+    color: rgb(249, 249, 48);
     padding: 0px 16px;
 }
 
@@ -29,6 +44,7 @@ set background
     display: flex;
     flex-direction: column;
     background-color: grey;
+    opacity: 0.8;
 }
 
 /*
@@ -51,19 +67,19 @@ results
 
 .results .sign {
     flex: auto;
-    font-size: 72px;
+    font-size: 76px;
     margin-bottom: 16px;
 }
 
 .results .score {
     flex: auto;
-    font-size: 24px;
+    font-size: 26px;
 }
 
 /*
 buttons
 */
-.buttons{
+.buttons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,13 +88,15 @@ buttons
 }
 
 .buttons button {
-    font-size: 24px;
+    font-size: 26px;
     width: 180px;
     height: 180px;
     border-radius: 18px;
     cursor: pointer;
     background-color: #393e46;
     color: white;
+    font-family: "Mario-Kart-DS", "sans-serif";
+    word-spacing: 16px;
 }
 
 #rock {
@@ -127,7 +145,7 @@ announcement
     flex-direction: column;
     font-size: 36px;
     text-align: center;
-    padding: 0px 0px 96px;
+    padding: 0px 0px 196px;
     gap: 16px;
 }
 
@@ -165,6 +183,8 @@ modal
     border: 1px solid;
     margin-bottom: 16px;
     color: white;
+    font-family: "Mario-Kart-DS", "sans-serif";
+    word-spacing: 16px;
 }
 
 .modal.active {
@@ -202,4 +222,10 @@ modal
     text-shadow: 0 0 10px rgb(0, 255, 255), 0 0 15px rgb(255, 33, 248), 0px 0px 20px rgb(238, 132, 248);
 }
 
-
+/*
+misc
+*/
+@font-face {
+    font-family: "Mario-Kart-DS";
+    src: url(fonts/Mario-Kart-DS.ttf);
+}

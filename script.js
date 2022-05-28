@@ -12,7 +12,8 @@ const overlay = document.querySelector('.overlay');
 const playerSign = document.querySelector('#player-sign');
 const computerSign = document.querySelector('#computer-sign');
 var modalMsg = document.querySelector('.modal .modal-msg');
-var announce = document.querySelector('.announcement');
+var announceHeader = document.querySelector('.announcement .rules');
+var announce = document.querySelector('.announcement .condition');
 
 /*
 event listeners on buttons
@@ -58,35 +59,39 @@ function playRound(playerSelection, computerSelection) {
     var playerSelection = playerSelection.toLowerCase();
 
     if (playerSelection === computerSelection) {
-        announce.textContent = "It's a tie!";
+        announce.textContent = "it's a tie!";
         return 0;
     }
+    /*
     // Just minor formatting - capitalising the first letter of choice made
     let playerChoice = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
     let computerChoice = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1);
+    */
+    playerChoice = playerSelection;
+    computerChoice = computerSelection;
 
     if (playerSelection === "scissors") {
         if (computerSelection === "rock") {
-            announce.textContent = "You Lose! " + computerChoice + " beats " + playerChoice;
+            announce.textContent = "you lose! " + computerChoice + " beats " + playerChoice;
             return 2;
         } else {
-            announce.textContent = "You Win! " + playerChoice + " beats " + computerChoice;
+            announce.textContent = "you win! " + playerChoice + " beats " + computerChoice;
             return 1;
         } 
     } else if (playerSelection === "paper") {
         if (computerSelection === "rock") {
-            announce.textContent = "You Win! " + playerChoice + " beats " + computerChoice;
+            announce.textContent = "you win! " + playerChoice + " beats " + computerChoice;
             return 1;
         } else {
-            announce.textContent = "You Lose! " + computerChoice + " beats " + playerChoice;
+            announce.textContent = "you lose! " + computerChoice + " beats " + playerChoice;
             return 2;
         } 
     } else {
         if (computerSelection === "paper") {
-            announce.textContent = "You Lose! " + computerChoice + " beats " + playerChoice;
+            announce.textContent = "you lose! " + computerChoice + " beats " + playerChoice;
             return 2;
         } else {
-            announce.textContent = "You Win! " + playerChoice + " beats " + computerChoice;
+            announce.textContent = "you win! " + playerChoice + " beats " + computerChoice;
             return 1;
         } 
     }
@@ -97,6 +102,7 @@ function click(playerSelection) {
     if (isGameOver()) {
         openModal();
     }
+    announceHeader.textContent = "OUTCOME:";
     const computerSelection = computerPlay();
     const result = playRound(playerSelection, computerSelection);
     updateScore(result);
@@ -121,8 +127,8 @@ function updateScore(result) {
     } else if (result === 2) {
         computerScore++;
     }
-    playerCurrScore.textContent = `You: ${playerScore}`;
-    computerCurrScore.textContent = `Computer: ${computerScore}`;
+    playerCurrScore.textContent = `YOU: ${playerScore}`;
+    computerCurrScore.textContent = `COMPUTER: ${computerScore}`;
 }
 
 /*
@@ -180,8 +186,8 @@ Sets message in modal
 */
 function setModalMsg() {
     return playerScore > computerScore 
-    ? modalMsg.textContent = "You Won!" 
-    :  modalMsg.textContent = "You Lost!"
+    ? modalMsg.textContent = "you WON!" 
+    :  modalMsg.textContent = "you LOST!"
 }
 
 /*
@@ -190,9 +196,10 @@ Restarts game
 function restartGame() {
     playerScore = 0;
     computerScore = 0;
-    announce.textContent = "~ First to 5 wins ~";
-    playerCurrScore.textContent = "You: 0";
-    computerCurrScore.textContent = "Computer: 0";
+    announceHeader.textContent = "RULES";
+    announce.textContent = "~ first to 5 wins ~";
+    playerCurrScore.textContent = "YOU: 0";
+    computerCurrScore.textContent = "COMPUTER: 0";
     playerSign.textContent = '❓';
     computerSign.textContent = '❓';
     closeModal();
