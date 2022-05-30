@@ -1,16 +1,34 @@
 /*
+emojis
+*/
+const ROCK_SIGN = '👊';
+const PAPER_SIGN = '✋';
+const SCISSORS_SIGN ='✌️';
+const DIFFICULTY = 0.25; // 25% of the time, the computer will win!
+const NORMAL = "normal";
+const HARD = "hard";
+
+/*
+Initial game state
+*/
+let playerScore = 0;
+let computerScore = 0;
+let currMode = "normal";
+
+/*
 handles DOM
 */
 const rock = document.querySelector('#rock');
 const paper = document.querySelector('#paper');
 const scissors = document.querySelector('#scissors');
-const restart = document.querySelector('#restart-btn');
+const restart = document.querySelectorAll('.restart-btn');
 const playerCurrScore = document.querySelector('#player-score');
 const computerCurrScore = document.querySelector('#computer-score');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const playerSign = document.querySelector('#player-sign');
 const computerSign = document.querySelector('#computer-sign');
+const toggleLevel = document.querySelector('.toggle-level')
 var modalMsg = document.querySelector('.modal .modal-msg');
 var announceHeader = document.querySelector('.announcement .rules');
 var announce = document.querySelector('.announcement .condition');
@@ -21,14 +39,39 @@ event listeners on buttons
 rock.addEventListener("click", () => click("rock"));
 paper.addEventListener("click", () => click("paper"));
 scissors.addEventListener("click", () => click("scissors"));
-restart.addEventListener("click", restartGame);
-
+toggleLevel.addEventListener("click", changeMode);
+restart.forEach(e => e.addEventListener("click", restartGame));
 
 /*
-Initial game state
+Change the current gameplay mode and reload. Only 2 modes as of now.
 */
-let playerScore = 0;
-let computerScore = 0;
+function changeMode() {
+    if (currMode === NORMAL) {
+        currMode = HARD;
+        toggleLevel.textContent = `go ${NORMAL}`;
+    } else {
+        currMode = NORMAL;
+        toggleLevel.textContent = `go ${HARD}`;
+    }
+    restartGame();
+}
+
+/*
+Generate a winning move by the computer
+*/
+function computerWin(playerInput) {
+    if (playerInput == null) {
+        return "ERROR";
+    }
+    switch (playerInput) {
+        case "rock":
+            return "paper";
+        case "paper":
+            return "scissors";
+        case "scissors":
+            return "rock";
+    }
+}
 
 /*
 Generate a random move by the computer
@@ -42,7 +85,20 @@ function computerPlay() {
     } else {
         return "rock";
     }
-} 
+}
+
+/*
+Computer makes a choice depending on current mode
+*/
+function computerDecision(playerInput) {
+    if (currMode === HARD) {
+        let chance = Math.random();
+        if (chance < DIFFICULTY) {
+            return computerWin(playerInput);
+        }
+    }
+    return computerPlay();
+}
 
 /*
 Determines the outcome after 1 round & displays it
@@ -103,10 +159,10 @@ function click(playerSelection) {
         openModal();
     }
     announceHeader.textContent = "OUTCOME:";
-    const computerSelection = computerPlay();
+    const computerSelection = computerDecision(playerSelection);
     const result = playRound(playerSelection, computerSelection);
     updateScore(result);
-    updateChoices(playerSelection, computerSelection);
+    updateDisplay(playerSelection, computerSelection);
 
     if (isGameOver()) {
         openModal();
@@ -134,27 +190,27 @@ function updateScore(result) {
 /*
 Update to display choice of player and computer 
 */
-function updateChoices(playerSelection, computerSelection) {
+function updateDisplay(playerSelection, computerSelection) {
     switch (playerSelection) {
         case "rock":
-            playerSign.textContent = '🪨';
+            playerSign.textContent = ROCK_SIGN;
             break;
         case "paper":
-            playerSign.textContent = '📄';
+            playerSign.textContent = PAPER_SIGN;
             break;
         case "scissors":
-            playerSign.textContent = '✂️'
+            playerSign.textContent = SCISSORS_SIGN;
     }
 
     switch (computerSelection) {
         case "rock":
-            computerSign.textContent = '🪨';
+            computerSign.textContent = ROCK_SIGN;
             break;
         case "paper":
-            computerSign.textContent = '📄';
+            computerSign.textContent = PAPER_SIGN;
             break;
         case "scissors":
-            computerSign.textContent = '✂️'
+            computerSign.textContent = SCISSORS_SIGN;
     }
 }
 
@@ -191,7 +247,7 @@ function setModalMsg() {
 }
 
 /*
-Restarts game
+Reset scores.
 */
 function restartGame() {
     playerScore = 0;

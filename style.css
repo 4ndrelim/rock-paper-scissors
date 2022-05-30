@@ -1,3 +1,7 @@
+:root {
+    --btnColour: #393e46;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -16,6 +20,10 @@ background for webpage
     object-fit: cover;
     z-index: -1;
     filter: brightness(1.25);
+}
+
+#bgm {
+    display: none;
 }
 
 /*
@@ -93,7 +101,7 @@ buttons
     height: 180px;
     border-radius: 18px;
     cursor: pointer;
-    background-color: #393e46;
+    background-color: var(--btnColour);
     color: white;
     font-family: "Mario-Kart-DS", "sans-serif";
     word-spacing: 16px;
@@ -145,8 +153,33 @@ announcement
     flex-direction: column;
     font-size: 36px;
     text-align: center;
-    padding: 0px 0px 196px;
+    padding: 0px 0px 64px;
     gap: 16px;
+}
+
+/*
+settings
+*/
+.settings {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0px 0px 48px;
+    gap: 64px;
+}
+
+.settings .restart-btn,
+.toggle-level {
+    font-size: 18px;
+    border-radius: 12px;
+    background-color: var(--btnColour);
+    border: 2px solid black;
+    color: white;
+    font-family: "Mario-Kart-DS", "sans-serif";
+    word-spacing: 4px;
+    padding: 16px 0;
+    width: 100px;
+    cursor: pointer;
 }
 
 /*
@@ -174,7 +207,7 @@ modal
     font-weight: bold;
 }
 
-#restart-btn {
+.modal .restart-btn {
     font-size: 16px;
     padding: 12px 8px;
     border-radius: 20px;
@@ -217,7 +250,8 @@ modal
     color: white;
 }
 
-#restart-btn:hover,
+.restart-btn:hover,
+.toggle-level:hover,
 .credit a:hover {
     text-shadow: 0 0 10px rgb(0, 255, 255), 0 0 15px rgb(255, 33, 248), 0px 0px 20px rgb(238, 132, 248);
 }

@@ -11,6 +11,7 @@
     <body>
         <div class="background">
             <img src="images/background.jpeg" alt="background image" id="bg">
+            <audio controls autoplay id="bgm" src="audio/mario.mp3" loop></audio>
         </div>
         <div class="header">
             <div>ROCK</div>
@@ -37,9 +38,13 @@
                 <div class="rules">RULES</div>
                 <div class="condition">~ first to 5 wins ~</div>
             </div>
+            <div class="settings">
+                <button class="restart-btn">restart</button>
+                <button class="toggle-level">go hard</button>
+            </div>
             <div class="modal">
                 <p class="modal-msg"></p>
-                <button id="restart-btn">restart</button>
+                <button class="restart-btn">restart</button>
                 <div class="credit">by <a href="https://github.com/4ndrelim">ANDRE</a></div>
             </div>
             <div class="overlay"></div>
