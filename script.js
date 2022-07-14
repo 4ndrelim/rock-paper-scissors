@@ -43,13 +43,32 @@ toggleLevel.addEventListener("click", changeMode);
 restart.forEach(e => e.addEventListener("click", restartGame));
 
 /*
+handles audio
+NOTE: chrome disables autoplay see here:
+https://developer.chrome.com/blog/autoplay/
+*/
+const audioQuery = document.querySelector('#bgm');
+window.addEventListener("DOMContentLoaded", event => {
+    audioQuery.volume = 1;
+    audioQuery.play();
+});
+document.querySelector('.buttons').addEventListener('click', function() {
+    if (!audioQuery.play()) {
+        audioQuery.play();
+    }
+  });
+
+
+/*
 Change the current gameplay mode and reload. Only 2 modes as of now.
 */
 function changeMode() {
     if (currMode === NORMAL) {
+        console.log("Switching to Hard");
         currMode = HARD;
         toggleLevel.textContent = `go ${NORMAL}`;
     } else {
+        console.log("Switching to Normal");
         currMode = NORMAL;
         toggleLevel.textContent = `go ${HARD}`;
     }
