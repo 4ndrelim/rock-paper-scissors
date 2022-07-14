@@ -4,7 +4,7 @@ emojis
 const ROCK_SIGN = '👊';
 const PAPER_SIGN = '✋';
 const SCISSORS_SIGN ='✌️';
-const DIFFICULTY = 0.25; // 25% of the time, the computer will win!
+const DIFFICULTY = 0.28; // 28% of the time, the computer will win! Only applied in Hard mode
 const NORMAL = "normal";
 const HARD = "hard";
 
@@ -49,14 +49,45 @@ https://developer.chrome.com/blog/autoplay/
 */
 const audioQuery = document.querySelector('#bgm');
 window.addEventListener("DOMContentLoaded", event => {
-    audioQuery.volume = 1;
+    audioQuery.volume = 0.5;
     audioQuery.play();
 });
 document.querySelector('.buttons').addEventListener('click', function() {
     if (!audioQuery.play()) {
         audioQuery.play();
     }
-  });
+});
+
+/*
+Sound effects
+*/
+var beatEffect = new Audio("audio/success.mp3");
+var lossEffect = new Audio("audio/failure.mp3");
+
+/*
+Function to play beat effect whenever user wins a round
+*/
+function beatSound() {
+    if (lossEffect.play()) {
+        lossEffect.pause();
+    }
+    beatEffect.load();
+    beatEffect.volume = 0.85;
+    beatEffect.play();
+}
+
+/*
+Function to play beat effect whenever user wins a round
+*/
+function lossSound() {
+    if (beatEffect.play()) {
+        beatEffect.pause();
+    }
+    lossEffect.load();
+    lossEffect.volume = 0.85;
+    lossEffect.play();
+}
+
 
 
 /*
@@ -147,25 +178,31 @@ function playRound(playerSelection, computerSelection) {
 
     if (playerSelection === "scissors") {
         if (computerSelection === "rock") {
+            lossSound();
             announce.textContent = "you lose! " + computerChoice + " beats " + playerChoice;
             return 2;
         } else {
+            beatSound();
             announce.textContent = "you win! " + playerChoice + " beats " + computerChoice;
             return 1;
         } 
     } else if (playerSelection === "paper") {
         if (computerSelection === "rock") {
+            beatSound();
             announce.textContent = "you win! " + playerChoice + " beats " + computerChoice;
             return 1;
         } else {
+            lossSound();
             announce.textContent = "you lose! " + computerChoice + " beats " + playerChoice;
             return 2;
         } 
     } else {
         if (computerSelection === "paper") {
+            lossSound();
             announce.textContent = "you lose! " + computerChoice + " beats " + playerChoice;
             return 2;
         } else {
+            beatSound();
             announce.textContent = "you win! " + playerChoice + " beats " + computerChoice;
             return 1;
         } 
