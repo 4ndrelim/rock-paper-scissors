@@ -61,8 +61,8 @@ document.querySelector('.buttons').addEventListener('click', function() {
 /*
 Sound effects
 */
-var beatEffect = new Audio("audio/success.mp3");
-var lossEffect = new Audio("audio/failure.mp3");
+var beatEffect = new Audio("./audio/success.mp3");
+var lossEffect = new Audio("./audio/failure.mp3");
 
 /*
 Function to play beat effect whenever user wins a round
